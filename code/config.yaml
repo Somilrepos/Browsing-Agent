@@ -1,0 +1,48 @@
+
+# WebVoyager Configuration File
+
+# Project Information
+project:
+  name: WebVoyager
+  version: 1.0.0
+  description: An AI-powered web browsing assistant
+
+# API Keys
+api_keys:
+  GOOGLE_API_KEY: AIzaSyA1-Qyvo5iIzsB730lkRzc_KqYOqDHhugw
+  LANGCHAIN_API_KEY: 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
+
+langchain:
+  tracing:
+    enabled: false
+    version: 2
+  project: WebVoyager
+
+browser:
+  headless: false
+  args: null
+  default_viewport:
+    width: 1920
+    height: 1080
+  user_agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+
+# Agent Configuration
+agent:
+  model: gemini-2.0-flash
+  temperature: 0.7
+  top_p: 0.9
+
+# Prompt location
+prompt:
+  browser_agent_prompt: somilagarrw/web-voyager
+
+# Graph Settings
+graph:
+  recursion_limit: 50
+  max_steps: 150
+  
+# Logging Configuration
+logging:
+  level: INFO
+  file: web_voyager.log
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
