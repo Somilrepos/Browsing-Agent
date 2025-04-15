@@ -35,12 +35,13 @@ agent:
 # Prompt location
 prompt:
   browser_agent_prompt: somilagarrw/web-voyager
+  planning_agent_prompt: somilagarrw/planning_prompt
 
 # Graph Settings
 graph:
   recursion_limit: 50
   max_steps: 150
-  
+
 # Logging Configuration
 logging:
   level: INFO

@@ -6,7 +6,7 @@ from config import config
 
 def load_markup_script():
     """Load the JavaScript for page annotation"""
-    with open("resources/mark_page.js") as f:
+    with open("/var/home/oliver/Documents/MyCode/browser-use/resources/mark_page.js") as f:
         return f.read()
 
 mark_page_script = load_markup_script()

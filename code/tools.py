@@ -106,7 +106,7 @@ async def user_solve_captcha(state: AgentState):
 
 def update_scratchpad(state: AgentState):
     old = state.get("scratchpad")
-    if old:
+    if len(old)>1:
         txt = old[0].content
         last_line = txt.rsplit("\n", 1)[-1]
         step = int(re.match(r"\d+", last_line).group()) + 1
@@ -115,6 +115,12 @@ def update_scratchpad(state: AgentState):
         step = 1
     txt += f"\n{step}. {state['observation']}"
 
+    return {**state, "scratchpad": [SystemMessage(content=txt)]}
+
+def update_steps(state: AgentState):
+    txt = "Steps: \n"
+    for num, descp in state['steps']['steps'].items():
+        txt += f"STEP {int(num)}: {descp}\n"
     return {**state, "scratchpad": [SystemMessage(content=txt)]}
 
 tools_dict = {

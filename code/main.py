@@ -7,7 +7,7 @@ import base64
 from playwright.async_api import async_playwright
 
 from config import config
-from agent import create_agent
+from agent import create_browsing_agent, create_planning_agent
 from graph import build_graph
 
 async def main():
@@ -16,10 +16,11 @@ async def main():
     config.setup_langchain_tracing()
     
     # Create the agent
-    agent = create_agent()
+    browsing_agent = create_browsing_agent()
+    planning_agent = create_planning_agent()
     
     # Build the graph
-    graph = build_graph(agent)
+    graph = build_graph(planning_agent, browsing_agent)
     
     # Start the browser
     browser = await async_playwright().start()

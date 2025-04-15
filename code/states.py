@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, List
+from typing import TypedDict, Optional, List, Dict
 from langchain_core.messages import BaseMessage
 from playwright.async_api import Page
 
@@ -22,3 +22,5 @@ class AgentState(TypedDict):
     prediction: Prediction
     scratchpad: list[BaseMessage]
     observation: str
+    steps: Dict[str, str]
+    current_step_number: int
