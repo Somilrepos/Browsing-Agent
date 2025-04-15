@@ -25,32 +25,34 @@ async def main():
     # Start the browser
     browser = await async_playwright().start()
     browser = await browser.chromium.launch(headless=False)
-    page = await browser.new_page()
-    await page.goto("https://www.google.com")
+    context = await browser.new_context()
+    await context.new_page()
+    # await page.goto("https://www.google.com")
     
     task = input("Enter the task: ")
     
     # Run the agent
     await run_agent(
         graph, 
-        page, 
+        context, 
         task, 
         thread_id=1,
     )
     
     await browser.close()
 
-async def run_agent(graph, page, task, thread_id=1, max_steps=50):
+async def run_agent(graph, context, task, thread_id=1, max_steps=50):
     """Run the agent for the given task"""
     event_stream = graph.astream(
         {
-            "page": page,
+            "browserContext": context,
+            "page_id": 0,
             "input": task,
             "scratchpad": [],
         },
         {
             "recursion_limit": max_steps,
-            "configurable": {"thread_id": thread_id},
+            # "configurable": {"thread_id": thread_id},
         },
     )
 
@@ -62,25 +64,7 @@ async def run_agent(graph, page, task, thread_id=1, max_steps=50):
             continue
 
         data = event["agent"]
-
-        ### Removed !!!
-        # # Handle interruption (e.g., CAPTCHA)
-        # if data.get("__type__") == "interrupt":
-        #     clear_output(wait=False)
-        #     print(data)
-        #     print(f"🛑 INTERRUPT: {data.get('message', 'Human input required')}")
-        #     if "screenshot" in data:
-        #         display(Image(base64.b64decode(data["screenshot"])))
-
-        #     input("👉 Press Enter after completing the required action (e.g. solving CAPTCHA)...")
-
-        #     # Resume the graph
-        #     await graph.ainvoke(
-        #         {"resume": "User manually completed the task ✅"},
-        #         config={"configurable": {"thread_id": thread_id}},
-        #     )
-        #     continue
-
+        print(data.get("scratchpad"))
         pred = data.get("prediction") or {}
         action = pred.get("action")
         action_input = pred.get("args")
@@ -93,6 +77,7 @@ async def run_agent(graph, page, task, thread_id=1, max_steps=50):
 
         if action and "ANSWER" in action:
             final_answer = action_input[0] if isinstance(action_input, list) else action_input
+            print("Broke at point 1")
             break
 
     return final_answer

@@ -31,8 +31,10 @@ async def mark_page(page):
 
 async def annotate(state):
     """Annotate the page with bounding boxes and take a screenshot"""
-    marked_page = await mark_page.with_retry().ainvoke(state["page"])
-    return {**state, **marked_page}
+    pages = state['browserContext'].pages
+    page = pages[state['page_id']]
+    marked_page = await mark_page.with_retry().ainvoke(page)
+    return {**state, **marked_page, "page_list":[f"<Page_number={i}, url={p.url}>" for i, p in enumerate(pages)]}
 
 def format_descriptions(state):
     """Format bounding box descriptions for the agent"""

@@ -30,6 +30,7 @@ def build_graph(planning_agent, browsing_agent):
     def select_tool(states: AgentState):
         print("Selecting next tool...")
         action = states["prediction"]["action"]
+        print(action)
         if action == "ANSWER":
             return END
         if action == "retry":

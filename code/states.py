@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List, Dict
 from langchain_core.messages import BaseMessage
-from playwright.async_api import Page
+from playwright.async_api import BrowserContext
 
 class BBox(TypedDict):
     """Bounding box for an interactive web element"""
@@ -15,7 +15,8 @@ class Prediction(TypedDict):
     args: Optional[List[str]]
 
 class AgentState(TypedDict):
-    page: Page
+    browserContext: BrowserContext
+    page_id: int 
     input: str
     img: str
     bboxes: List[BBox]
