@@ -1,8 +1,8 @@
 import base64
 import asyncio
 from langchain_core.runnables import chain as chain_decorator
+from urllib.parse import urlparse, urlunparse
 
-from config import config
 
 def load_markup_script():
     """Load the JavaScript for page annotation"""
@@ -72,3 +72,27 @@ def log_stage(name):
     """Utility for logging stages of execution"""
     from langchain_core.runnables import RunnableLambda
     return RunnableLambda(lambda x: (print(f"\n🔍 {name}:\n{x}"), x)[1])
+
+
+def canonicalise(raw_url: str) -> str:
+    original = raw_url.strip()
+
+    if "://" not in original:
+        parsed = urlparse(f"//{original}", scheme="")
+    else:
+        parsed = urlparse(original)
+
+    host_port = parsed.netloc if parsed.netloc else parsed.path.split("/")[0]
+    host = host_port.split(":")[0].lower().rstrip(".")
+
+    if not host.startswith("www.") and host.count(".") == 1:
+        host = f"www.{host}"
+
+    # Reconstruct the canonical URL
+    scheme = "https"
+    netloc = host
+    path = parsed.path if parsed.netloc else original[len(host_port):]
+    query = parsed.query
+    fragment = parsed.fragment
+
+    return urlunparse((scheme, netloc, path or "", "", query, fragment))

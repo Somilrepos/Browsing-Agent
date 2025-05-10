@@ -5,6 +5,7 @@ from langgraph.types import interrupt
 from langchain_core.messages import SystemMessage
 
 from states import AgentState
+from utils import canonicalise
 
 async def click(state: AgentState):
     page = state['browserContext'].pages[state['page_id']]
@@ -97,9 +98,10 @@ async def goto(state: AgentState):
     page = pages[state['page_id']]
     # print(page)
     url = state["prediction"]['args'][0]
+    clean_url = canonicalise(url)
     # print(page)
-    await page.goto(url)
-    return f"Navigated to {url}"
+    await page.goto(clean_url)
+    return f"Navigated to {clean_url}"
 
 async def switch_page(state: AgentState):
     page_id =  int(state["prediction"]['args'])

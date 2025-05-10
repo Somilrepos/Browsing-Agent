@@ -9,8 +9,8 @@ project:
 
 # API Keys
 api_keys:
-  GOOGLE_API_KEY: AIzaSyA1-Qyvo5iIzsB730lkRzc_KqYOqDHhugw
-  LANGCHAIN_API_KEY: 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
+  GOOGLE_API_KEY: GOOGLE_API_KEY
+  LANGCHAIN_API_KEY: LANGCHAIN_API_KEY
 
 langchain:
   tracing:
@@ -47,3 +47,7 @@ logging:
   level: INFO
   file: web_voyager.log
   format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+
+# url_parser:
+#   CANON_HOST: www.example.com
+#   CANON_SCHEME: https
